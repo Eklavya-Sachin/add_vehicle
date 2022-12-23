@@ -33,20 +33,21 @@ class HomeView extends GetView<HomeController> {
         appBar: AppBar(
           backgroundColor: Colors.deepPurple,
           title: const Text('Vehicles'),
-          titleSpacing: 30,
+          titleSpacing: 20,
+          elevation: 0,
+        ),
+        body: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) => const VehicleTile(
+            vehicleNum: "DL3SAU1404",
+            vehicleCompany: "Maruti Suzuki Dzire",
+          ),
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
           onPressed: () => Get.to(() => const VehicleNumber()),
           child: const Icon(
             Icons.add,
-          ),
-        ),
-        body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) => const VehicleTile(
-            vehicleNum: "DL3SAU1404",
-            vehicleCompany: "TATA",
           ),
         ),
       ),

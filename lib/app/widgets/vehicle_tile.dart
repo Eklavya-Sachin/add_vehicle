@@ -16,15 +16,22 @@ class VehicleTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          title: Text(
-            vehicleNum,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+          title: Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Text(
+              vehicleNum,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
           subtitle: Text(
             vehicleCompany,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w400,
-              color: Colors.black54,
+              color: Colors.grey.shade800,
+              fontSize: 18,
             ),
           ),
           trailing: IconButton(
