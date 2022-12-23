@@ -1,13 +1,29 @@
+import '../../widgets/vehicle_detail_tile.dart';
+import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
+import 'vehicle_transmission.dart';
 
 class VehicleFuelType extends StatefulWidget {
-  const VehicleFuelType({Key? key}) : super(key: key);
+  final String numController;
+  const VehicleFuelType({Key? key, required this.numController})
+      : super(key: key);
 
   @override
   State<VehicleFuelType> createState() => _VehicleFuelTypeState();
 }
 
 class _VehicleFuelTypeState extends State<VehicleFuelType> {
+  final _data = Get.arguments;
+
+  List<String> fuelTypeList = [
+    "Petrol",
+    "Diesel",
+    "CNG",
+    "Petrol + CNG",
+    "Electric",
+    "Hybrid",
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,93 +33,17 @@ class _VehicleFuelTypeState extends State<VehicleFuelType> {
         elevation: 0,
         titleSpacing: 0,
       ),
-      body: ListView(
-        children: [
-          ListTile(
-            title: Text(
-              "Petrol",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ),
-          ListTile(
-            title: Text(
-              "Diesel",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ),
-          ListTile(
-            title: Text(
-              "CNG",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ),
-          ListTile(
-            title: Text(
-              "Petrol + CNG",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ),
-          ListTile(
-            title: Text(
-              "Electric",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ),
-          ListTile(
-            title: Text(
-              "Hybrid",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey.shade700,
-              ),
-            ),
-            trailing: IconButton(
-              icon: const Icon(Icons.arrow_forward_ios),
-              onPressed: () {},
-            ),
-          ),
-        ],
+      body: ListView.builder(
+        itemCount: fuelTypeList.length,
+        itemBuilder: (context, index) => InkWell(
+            onTap: () => Get.to(
+                  () =>
+                      VehicleTransmission(numController: widget.numController),
+                  arguments: [_data, fuelTypeList[index]],
+                ),
+            child: VehicleDetialTile(
+              name: fuelTypeList[index],
+            )),
       ),
     );
   }

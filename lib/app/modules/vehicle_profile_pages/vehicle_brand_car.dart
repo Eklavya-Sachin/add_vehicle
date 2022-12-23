@@ -3,30 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'vehicle_model.dart';
 
-class VehicleBrandBike extends StatefulWidget {
+class VehicleBrandCar extends StatefulWidget {
   final String numController;
-  const VehicleBrandBike({Key? key, required this.numController})
+  const VehicleBrandCar({Key? key, required this.numController})
       : super(key: key);
 
   @override
-  State<VehicleBrandBike> createState() => _VehicleBrandBikeState();
+  State<VehicleBrandCar> createState() => _VehicleBrandCarState();
 }
 
-class _VehicleBrandBikeState extends State<VehicleBrandBike> {
-  List? bikeResponseList;
+class _VehicleBrandCarState extends State<VehicleBrandCar> {
   List? carResponseList;
 
   @override
   void initState() {
-    _bikeApi();
+    _carApi();
     super.initState();
   }
 
-  Future _bikeApi() async {
-    final bikeResponse = await GetConnect()
-        .get("https://test.turbocare.app/turbo/care/v1/makes?class=2w");
+  Future _carApi() async {
+    final carResponse = await GetConnect()
+        .get("https://test.turbocare.app/turbo/care/v1/makes?class=4w");
     setState(() {
-      bikeResponseList = bikeResponse.body;
+      carResponseList = carResponse.body;
     });
   }
 
@@ -39,16 +38,16 @@ class _VehicleBrandBikeState extends State<VehicleBrandBike> {
         elevation: 0,
         titleSpacing: 0,
       ),
-      body: bikeResponseList != null
+      body: carResponseList != null
           ? ListView.builder(
-              itemCount: bikeResponseList?.length,
+              itemCount: carResponseList?.length,
               itemBuilder: (context, index) => InkWell(
                 onTap: () => Get.to(
                   () =>  VehicleModel(numController: widget.numController),
-                  arguments: [bikeResponseList?[index]],
+                  arguments: [carResponseList?[index]],
                 ),
                 child: VehicleDetialTile(
-                  name: bikeResponseList?[index] ?? "NA",
+                  name: carResponseList?[index] ?? "NA",
                 ),
               ),
             )

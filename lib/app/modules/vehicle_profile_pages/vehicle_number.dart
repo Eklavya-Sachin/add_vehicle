@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'vehicle_weels.dart';
 
 class VehicleNumber extends StatefulWidget {
   const VehicleNumber({Key? key}) : super(key: key);
@@ -9,6 +11,8 @@ class VehicleNumber extends StatefulWidget {
 
 class _VehicleNumberState extends State<VehicleNumber> {
   final vehicleNumController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +37,23 @@ class _VehicleNumberState extends State<VehicleNumber> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
-                child: TextField(
-                  textCapitalization: TextCapitalization.characters,
-                  controller: vehicleNumController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.deepPurple)),
-                      hintText: "Enter your Vehicle Number!"),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    textCapitalization: TextCapitalization.characters,
+                    validator: (value) {
+                      if (value!.isEmpty || value.length < 7) {
+                        return "This field is Required!";
+                      }
+                      return null;
+                    },
+                    controller: vehicleNumController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepPurple)),
+                        hintText: "Enter your Vehicle Number!"),
+                  ),
                 ),
               ),
             ],
@@ -48,7 +61,12 @@ class _VehicleNumberState extends State<VehicleNumber> {
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
-          onPressed: () {},
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              Get.to(() => VehicleWeels(
+                  numController: vehicleNumController.text.trim()));
+            }
+          },
           child: const Icon(Icons.arrow_forward_ios),
         ),
       ),
