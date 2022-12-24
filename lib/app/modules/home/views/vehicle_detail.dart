@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import '../home/views/home_view.dart';
+import '../../../data/vehicle_model.dart';
+import 'package:hive/hive.dart';
 import 'package:get/get.dart';
 
-class VehicleProfile extends StatefulWidget {
-  final String numController;
+class VehicleProfile extends StatelessWidget {
+  VehicleProfile({Key? key}) : super(key: key);
+  final VehicleModel data = Get.arguments;
+  final Box vehicleBox = Hive.box("vehicle");
 
-  const VehicleProfile({Key? key,required this.numController}) : super(key: key);
-
-  @override
-  State<VehicleProfile> createState() => _VehicleProfileState();
-}
-
-class _VehicleProfileState extends State<VehicleProfile> {
-  final _data = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,36 +20,8 @@ class _VehicleProfileState extends State<VehicleProfile> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const BackButton(color: Colors.white),
-                    IconButton(
-                      icon: const Icon(Icons.save, color: Colors.white),
-                      onPressed: () => Get.defaultDialog(
-                        title: "Vehicle Deitals",
-                        content: const Text("Do you want to save This?"),
-                        actions: [
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.deepPurple)),
-                            onPressed: () => Get.back(),
-                            child: const Text("No"),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.deepPurple)),
-                            onPressed: () => Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeView()),
-                              (route) => false,
-                            ),
-                            child: const Text("Yes"),
-                          ),
-                        ],
-                      ),
-                    ),
+                  children: const [
+                    BackButton(color: Colors.white),
                   ],
                 ),
               ),
@@ -70,7 +37,7 @@ class _VehicleProfileState extends State<VehicleProfile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 5),
                     child: Text(
-                      _data[0][0][0][0] + ' ' + _data[0][1],
+                      data.vehicleBrand ?? "NA",
                       style: const TextStyle(
                           fontSize: 30,
                           color: Colors.white,
@@ -80,7 +47,7 @@ class _VehicleProfileState extends State<VehicleProfile> {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, bottom: 20),
                     child: Text(
-                     widget.numController,
+                      data.vehicleNumber ?? "NA",
                       style: const TextStyle(
                           fontSize: 17,
                           color: Colors.white,
@@ -110,7 +77,7 @@ class _VehicleProfileState extends State<VehicleProfile> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            _data[0][0][0][0],
+                            data.vehicleBrand ?? "NA",
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,
@@ -131,7 +98,7 @@ class _VehicleProfileState extends State<VehicleProfile> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            _data[0][0][1],
+                            data.vehicleModel ?? "NA",
                             style: const TextStyle(
                               fontSize: 17,
                               color: Colors.black,
@@ -160,7 +127,7 @@ class _VehicleProfileState extends State<VehicleProfile> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            _data[0][1],
+                            data.vehicleFuelType ?? "NA",
                             style: const TextStyle(
                               fontSize: 17,
                               color: Colors.black,
@@ -181,7 +148,7 @@ class _VehicleProfileState extends State<VehicleProfile> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            _data[1],
+                            data.vehicleTransmission ?? "NA",
                             style: const TextStyle(
                               fontSize: 17,
                               color: Colors.black,

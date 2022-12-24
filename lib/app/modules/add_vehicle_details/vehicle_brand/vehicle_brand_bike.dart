@@ -1,7 +1,7 @@
-import '../../widgets/vehicle_detail_tile.dart';
+import '../../../widgets/vehicle_detail_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'vehicle_model.dart';
+import '../vehicle_model.dart';
 
 class VehicleBrandBike extends StatefulWidget {
   final String numController;
@@ -14,7 +14,6 @@ class VehicleBrandBike extends StatefulWidget {
 
 class _VehicleBrandBikeState extends State<VehicleBrandBike> {
   List? bikeResponseList;
-  List? carResponseList;
 
   @override
   void initState() {
@@ -44,7 +43,7 @@ class _VehicleBrandBikeState extends State<VehicleBrandBike> {
               itemCount: bikeResponseList?.length,
               itemBuilder: (context, index) => InkWell(
                 onTap: () => Get.to(
-                  () =>  VehicleModel(numController: widget.numController),
+                  () =>  VehicleModels(numController: widget.numController),
                   arguments: [bikeResponseList?[index]],
                 ),
                 child: VehicleDetialTile(

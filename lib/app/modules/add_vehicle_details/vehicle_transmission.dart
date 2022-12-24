@@ -1,7 +1,9 @@
+import 'package:hive/hive.dart';
+import '../../data/vehicle_model.dart';
 import '../../widgets/vehicle_detail_tile.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
-import 'vehicle_profile.dart';
+import '../home/views/home_view.dart';
 
 class VehicleTransmission extends StatefulWidget {
   final String numController;
@@ -13,6 +15,8 @@ class VehicleTransmission extends StatefulWidget {
 }
 
 class _VehicleTransmissionState extends State<VehicleTransmission> {
+  Box box = Hive.box("vehicle");
+
   final _data = Get.arguments;
 
   List<String> transmissionList = [
@@ -32,10 +36,22 @@ class _VehicleTransmissionState extends State<VehicleTransmission> {
       body: ListView.builder(
         itemCount: transmissionList.length,
         itemBuilder: (context, index) => InkWell(
-          onTap: () => Get.to(
-            () =>  VehicleProfile(numController: widget.numController),
-            arguments: [_data, transmissionList[index]],
-          ),
+          onTap: () {
+            box.add(
+              VehicleModel(
+                vehicleNumber: widget.numController,
+                vehicleBrand: _data[0][0][0],
+                vehicleModel: _data[0][1],
+                vehicleFuelType: _data[1],
+                vehicleTransmission: transmissionList[index],
+              ),
+            );
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomeView()),
+              (route) => false,
+            );
+          },
           child: VehicleDetialTile(
             name: transmissionList[index],
           ),

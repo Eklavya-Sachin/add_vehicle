@@ -1,8 +1,8 @@
 import '../../widgets/vehicle_detail_tile.dart';
 import 'package:get/route_manager.dart';
 import 'package:flutter/material.dart';
-import 'vehicle_brand_car.dart';
-import 'vehicle_brand.dart';
+import 'vehicle_brand/vehicle_brand_car.dart';
+import 'vehicle_brand/vehicle_brand_bike.dart';
 
 class VehicleWeels extends StatelessWidget {
   final String numController;
