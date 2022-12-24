@@ -1,11 +1,18 @@
-import '../../vehicle_profile_pages/vehicle_number.dart';
+// ignore_for_file: prefer_const_constructors
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:vehicle_info/app/modules/home/views/vehicle_detail.dart';
+import '../../../data/vehicle_model.dart';
+import '../../add_vehicle_details/vehicle_number.dart';
 import '../controllers/home_controller.dart';
-import '../../../widgets/vehicle_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({Key? key}) : super(key: key);
+  HomeView({Key? key}) : super(key: key);
+
+  final Box vehicleBox = Hive.box("vehicle");
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -36,13 +43,11 @@ class HomeView extends GetView<HomeController> {
           titleSpacing: 20,
           elevation: 0,
         ),
-        body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) => const VehicleTile(
-            vehicleNum: "DL3SAU1404",
-            vehicleCompany: "Maruti Suzuki Dzire",
-          ),
-        ),
+        body: vehicleBox.isNotEmpty
+            ? cusListViewBuilder()
+            : Center(
+                child: Text("Add Vehicle to your list"),
+              ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.deepPurple,
           onPressed: () => Get.to(() => const VehicleNumber()),
@@ -51,6 +56,58 @@ class HomeView extends GetView<HomeController> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget cusListViewBuilder() {
+    return WatchBoxBuilder(
+      box: Hive.box("vehicle"),
+      builder: (context, vehicleBox) {
+        return ListView.builder(
+          itemCount: vehicleBox.length,
+          itemBuilder: (context, index) {
+            final vehicle = vehicleBox.getAt(index) as VehicleModel?;
+            return InkWell(
+              onTap: () => Get.to(() => VehicleProfile(), arguments: vehicle),
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Text(
+                        vehicle?.vehicleNumber ?? "NA",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    subtitle: Text(
+                      vehicle?.vehicleBrand ?? "NA",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey.shade800,
+                        fontSize: 18,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      onPressed: () => vehicleBox.deleteAt(index),
+                      icon: const Icon(
+                        Icons.delete,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Colors.grey.shade200,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
